@@ -34,6 +34,13 @@
     ],
     "rules": [
       {
+        "domain": [
+          "www.speedtest.net",
+          "edb9e66a.bpb-worker-panel-bnj.pages.dev"
+        ],
+        "server": "dns-direct"
+      },
+      {
         "domain": "cp.cloudflare.com",
         "server": "dns-remote",
         "rewrite_ttl": 3000
@@ -42,12 +49,8 @@
     "final": "dns-remote",
     "static_ips": {
       "sky.rethinkdns.com": [
-        "188.114.96.3",
-        "188.114.97.3",
         "104.17.147.22",
-        "104.17.148.22",
-        "188.114.96.3",
-        "188.114.97.3"
+        "104.17.148.22"
       ]
     },
     "independent_cache": true
@@ -61,13 +64,14 @@
       "auto_route": true,
       "strict_route": true,
       "endpoint_independent_nat": true,
+      "stack": "mixed",
       "sniff": true,
       "sniff_override_destination": true
     },
     {
       "type": "mixed",
       "tag": "mixed-in",
-      "listen": "0.0.0.0",
+      "listen": "127.0.0.1",
       "listen_port": 2334,
       "sniff": true,
       "sniff_override_destination": true
@@ -75,10 +79,8 @@
     {
       "type": "direct",
       "tag": "dns-in",
-      "listen": "0.0.0.0",
-      "listen_port": 6450,
-      "override_address": "1.1.1.1",
-      "override_port": 53
+      "listen": "127.0.0.1",
+      "listen_port": 6450
     }
   ],
   "outbounds": [
@@ -87,20 +89,13 @@
       "tag": "select",
       "outbounds": [
         "auto",
-        "Warp-IR2",
-        "Warp-Main2",
-        "Warp-IR3",
-        "Warp-Main3",
-        "Warp-IR4",
-        "Warp-Main4",
-        "Warp-IR5",
-        "Warp-Main5",
-        "Warp-IR6",
-        "Warp-Main6",
-        "Warp-IR7",
-        "Warp-Main7",
-        "Warp-IR8",
-        "Warp-Main8"
+        "💦 BPB - Domain_1 : 443 § 0",
+        "💦 BPB - Domain_2 : 443 § 1",
+        "💦 BPB - IPv4_1 : 443 § 2",
+        "💦 BPB - IPv4_2 : 443 § 3",
+        "💦 BPB - IPv6_1 : 443 § 4",
+        "💦 BPB - IPv6_2 : 443 § 5",
+        "💦 BPB - Clean IP_1 : 443 § 6"
       ],
       "default": "auto"
     },
@@ -108,233 +103,192 @@
       "type": "urltest",
       "tag": "auto",
       "outbounds": [
-        "Warp-IR2",
-        "Warp-Main2",
-        "Warp-IR3",
-        "Warp-Main3",
-        "Warp-IR4",
-        "Warp-Main4",
-        "Warp-IR5",
-        "Warp-Main5",
-        "Warp-IR6",
-        "Warp-Main6",
-        "Warp-IR7",
-        "Warp-Main7",
-        "Warp-IR8",
-        "Warp-Main8"
+        "💦 BPB - Domain_1 : 443 § 0",
+        "💦 BPB - Domain_2 : 443 § 1",
+        "💦 BPB - IPv4_1 : 443 § 2",
+        "💦 BPB - IPv4_2 : 443 § 3",
+        "💦 BPB - IPv6_1 : 443 § 4",
+        "💦 BPB - IPv6_2 : 443 § 5",
+        "💦 BPB - Clean IP_1 : 443 § 6"
       ],
-      "url": "http://cp.cloudflare.com/",
-      "interval": "10m0s"
+      "url": "http://connectivitycheck.gstatic.com/generate_204",
+      "interval": "10m0s",
+      "idle_timeout": "1h40m0s"
     },
     {
-      "type": "wireguard",
-      "tag": "Warp-IR2",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:84b4:3a44:a0cb:de32:a354/128"
-      ],
-      "private_key": "YEkU6V30Fkbd3hf2ttuSCm6h5OwHwMMb/KIJ26xk9nc=",
-      "server": "162.159.192.79",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "1cnk",
-      "mtu": 1280,
-      "fake_packets": "5-10"
+      "type": "vless",
+      "tag": "💦 BPB - Domain_1 : 443 § 0",
+      "server": "edb9e66a.bpb-worker-panel-bnj.pages.dev",
+      "server_port": 443,
+      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
+      "tls": {
+        "enabled": true,
+        "server_name": "edb9e66A.BPb-wORkEr-PAneL-Bnj.PAGes.DEv",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "randomized"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/OnhJwWOJpQK8e4bq",
+        "headers": {
+          "Host": "edB9E66A.BPb-worKeR-PAnEL-BNJ.PAGes.deV"
+        },
+        "max_early_data": 2560,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      },
+      "packet_encoding": ""
     },
     {
-      "type": "wireguard",
-      "tag": "Warp-Main2",
-      "detour": "Warp-IR2",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:8b83:193d:3ee0:8277:e523/128"
-      ],
-      "private_key": "sHMRogzhmBslkF8SQRyaCtgahNFUtDEnP7GPbsalck8=",
-      "server": "162.159.192.79",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "6+jr",
-      "mtu": 1120
+      "type": "vless",
+      "tag": "💦 BPB - Domain_2 : 443 § 1",
+      "server": "www.speedtest.net",
+      "server_port": 443,
+      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
+      "tls": {
+        "enabled": true,
+        "server_name": "eDB9E66a.BpB-WORker-PaneL-BNj.PAGES.DEV",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "randomized"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/1KcjFTVhF8KdIoM0",
+        "headers": {
+          "Host": "EDb9E66a.BPb-wORKER-PANEL-bNJ.pagES.dEV"
+        },
+        "max_early_data": 2560,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      },
+      "packet_encoding": ""
     },
     {
-      "type": "wireguard",
-      "tag": "Warp-IR3",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:84b4:3a44:a0cb:de32:a354/128"
-      ],
-      "private_key": "YEkU6V30Fkbd3hf2ttuSCm6h5OwHwMMb/KIJ26xk9nc=",
-      "server": "162.159.192.88",
-      "server_port": 894,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "1cnk",
-      "mtu": 1280,
-      "fake_packets": "5-10"
+      "type": "vless",
+      "tag": "💦 BPB - IPv4_1 : 443 § 2",
+      "server": "172.66.44.86",
+      "server_port": 443,
+      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
+      "tls": {
+        "enabled": true,
+        "server_name": "edb9e66A.bpB-wOrker-pAnEl-bNJ.PAGeS.DeV",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "randomized"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/h5A4k7FEfI1nSuI0",
+        "headers": {
+          "Host": "eDB9E66A.BpB-wORkeR-PANeL-bNj.pAGEs.Dev"
+        },
+        "max_early_data": 2560,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      },
+      "packet_encoding": ""
     },
     {
-      "type": "wireguard",
-      "tag": "Warp-Main3",
-      "detour": "Warp-IR3",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:8b83:193d:3ee0:8277:e523/128"
-      ],
-      "private_key": "sHMRogzhmBslkF8SQRyaCtgahNFUtDEnP7GPbsalck8=",
-      "server": "162.159.192.88",
-      "server_port": 894,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "6+jr",
-      "mtu": 1120
+      "type": "vless",
+      "tag": "💦 BPB - IPv4_2 : 443 § 3",
+      "server": "172.66.47.170",
+      "server_port": 443,
+      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
+      "tls": {
+        "enabled": true,
+        "server_name": "eDb9E66a.Bpb-WorKEr-PAnel-Bnj.PAgeS.DeV",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "randomized"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/3wmPXzVfLYocX1K3",
+        "headers": {
+          "Host": "eDB9E66a.BPb-workER-PaNel-Bnj.paGEs.DEv"
+        },
+        "max_early_data": 2560,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      },
+      "packet_encoding": ""
     },
     {
-      "type": "wireguard",
-      "tag": "Warp-IR4",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:84b4:3a44:a0cb:de32:a354/128"
-      ],
-      "private_key": "YEkU6V30Fkbd3hf2ttuSCm6h5OwHwMMb/KIJ26xk9nc=",
-      "server": "162.159.192.168",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "1cnk",
-      "mtu": 1280,
-      "fake_packets": "5-10"
+      "type": "vless",
+      "tag": "💦 BPB - IPv6_1 : 443 § 4",
+      "server": "2606:4700:310c::ac42:2faa",
+      "server_port": 443,
+      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
+      "tls": {
+        "enabled": true,
+        "server_name": "edB9e66a.bpB-WORKER-PaNEL-BNJ.PAGES.dev",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "randomized"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/eWsvj8x5xFwFdiAL",
+        "headers": {
+          "Host": "EDB9e66a.bpB-wOrkeR-pANEL-bNJ.PAgeS.Dev"
+        },
+        "max_early_data": 2560,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      },
+      "packet_encoding": ""
     },
     {
-      "type": "wireguard",
-      "tag": "Warp-Main4",
-      "detour": "Warp-IR4",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:8b83:193d:3ee0:8277:e523/128"
-      ],
-      "private_key": "sHMRogzhmBslkF8SQRyaCtgahNFUtDEnP7GPbsalck8=",
-      "server": "162.159.192.168",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "6+jr",
-      "mtu": 1120
+      "type": "vless",
+      "tag": "💦 BPB - IPv6_2 : 443 § 5",
+      "server": "2606:4700:310c::ac42:2c56",
+      "server_port": 443,
+      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
+      "tls": {
+        "enabled": true,
+        "server_name": "eDB9e66A.BpB-workeR-PAneL-bNJ.pAgeS.dEv",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "randomized"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/04JX3vKcF8PD7cHs",
+        "headers": {
+          "Host": "EDB9e66A.BpB-WoRKer-pANEL-BnJ.PAGES.dEV"
+        },
+        "max_early_data": 2560,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      },
+      "packet_encoding": ""
     },
     {
-      "type": "wireguard",
-      "tag": "Warp-IR5",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:84b4:3a44:a0cb:de32:a354/128"
-      ],
-      "private_key": "YEkU6V30Fkbd3hf2ttuSCm6h5OwHwMMb/KIJ26xk9nc=",
-      "server": "188.114.99.32",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "1cnk",
-      "mtu": 1280,
-      "fake_packets": "5-10"
-    },
-    {
-      "type": "wireguard",
-      "tag": "Warp-Main5",
-      "detour": "Warp-IR5",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:8b83:193d:3ee0:8277:e523/128"
-      ],
-      "private_key": "sHMRogzhmBslkF8SQRyaCtgahNFUtDEnP7GPbsalck8=",
-      "server": "188.114.99.32",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "6+jr",
-      "mtu": 1120
-    },
-    {
-      "type": "wireguard",
-      "tag": "Warp-IR6",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:84b4:3a44:a0cb:de32:a354/128"
-      ],
-      "private_key": "YEkU6V30Fkbd3hf2ttuSCm6h5OwHwMMb/KIJ26xk9nc=",
-      "server": "188.114.97.157",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "1cnk",
-      "mtu": 1280,
-      "fake_packets": "5-10"
-    },
-    {
-      "type": "wireguard",
-      "tag": "Warp-Main6",
-      "detour": "Warp-IR6",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:8b83:193d:3ee0:8277:e523/128"
-      ],
-      "private_key": "sHMRogzhmBslkF8SQRyaCtgahNFUtDEnP7GPbsalck8=",
-      "server": "188.114.97.157",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "6+jr",
-      "mtu": 1120
-    },
-    {
-      "type": "wireguard",
-      "tag": "Warp-IR7",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:84b4:3a44:a0cb:de32:a354/128"
-      ],
-      "private_key": "YEkU6V30Fkbd3hf2ttuSCm6h5OwHwMMb/KIJ26xk9nc=",
-      "server": "188.114.98.244",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "1cnk",
-      "mtu": 1280,
-      "fake_packets": "5-10"
-    },
-    {
-      "type": "wireguard",
-      "tag": "Warp-Main7",
-      "detour": "Warp-IR7",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:8b83:193d:3ee0:8277:e523/128"
-      ],
-      "private_key": "sHMRogzhmBslkF8SQRyaCtgahNFUtDEnP7GPbsalck8=",
-      "server": "188.114.98.244",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "6+jr",
-      "mtu": 1120
-    },
-    {
-      "type": "wireguard",
-      "tag": "Warp-IR8",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:84b4:3a44:a0cb:de32:a354/128"
-      ],
-      "private_key": "YEkU6V30Fkbd3hf2ttuSCm6h5OwHwMMb/KIJ26xk9nc=",
-      "server": "188.114.98.233",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "1cnk",
-      "mtu": 1280,
-      "fake_packets": "5-10"
-    },
-    {
-      "type": "wireguard",
-      "tag": "Warp-Main8",
-      "detour": "Warp-IR8",
-      "local_address": [
-        "172.16.0.2/32",
-        "2606:4700:110:8b83:193d:3ee0:8277:e523/128"
-      ],
-      "private_key": "sHMRogzhmBslkF8SQRyaCtgahNFUtDEnP7GPbsalck8=",
-      "server": "188.114.98.233",
-      "server_port": 987,
-      "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": "6+jr",
-      "mtu": 1120
+      "type": "vless",
+      "tag": "💦 BPB - Clean IP_1 : 443 § 6",
+      "server": "104.17.203.0",
+      "server_port": 443,
+      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
+      "tls": {
+        "enabled": true,
+        "server_name": "eDB9e66a.bPb-WOrKer-PANeL-BNj.PageS.dev",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "randomized"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/IydEC4UDB9CRSvDh",
+        "headers": {
+          "Host": "EdB9e66a.BPB-wORkER-paNEL-BNj.pAgEs.dEV"
+        },
+        "max_early_data": 2560,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      },
+      "packet_encoding": ""
     },
     {
       "type": "dns",
@@ -363,13 +317,18 @@
     }
   ],
   "route": {
-    "geoip": {
-      "path": "geo-assets\\sagernet-sing-geoip-geoip.db"
-    },
-    "geosite": {
-      "path": "geo-assets\\sagernet-sing-geosite-geosite.db"
-    },
     "rules": [
+      {
+        "rule_set": [
+          "geosite-ads",
+          "geosite-malware",
+          "geosite-phishing",
+          "geosite-cryptominers",
+          "geoip-malware",
+          "geoip-phishing"
+        ],
+        "outbound": "block"
+      },
       {
         "inbound": "dns-in",
         "outbound": "dns-out"
@@ -385,10 +344,50 @@
       {
         "clash_mode": "Global",
         "outbound": "select"
+      }
+    ],
+    "rule_set": [
+      {
+        "type": "remote",
+        "tag": "geosite-ads",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geosite-category-ads-all.srs",
+        "update_interval": "120h0m0s"
       },
       {
-        "geoip": "private",
-        "outbound": "bypass"
+        "type": "remote",
+        "tag": "geosite-malware",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geosite-malware.srs",
+        "update_interval": "120h0m0s"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-phishing",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geosite-phishing.srs",
+        "update_interval": "120h0m0s"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-cryptominers",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geosite-cryptominers.srs",
+        "update_interval": "120h0m0s"
+      },
+      {
+        "type": "remote",
+        "tag": "geoip-phishing",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geoip-phishing.srs",
+        "update_interval": "120h0m0s"
+      },
+      {
+        "type": "remote",
+        "tag": "geoip-malware",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geoip-malware.srs",
+        "update_interval": "120h0m0s"
       }
     ],
     "final": "select",
@@ -401,7 +400,8 @@
       "path": "clash.db"
     },
     "clash_api": {
-      "external_controller": "127.0.0.1:6756"
+      "external_controller": "127.0.0.1:6756",
+      "secret": "J_FJEj_BtddEdYjl"
     }
   }
 }
