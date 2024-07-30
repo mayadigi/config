@@ -1,407 +1,79 @@
-{
-  "log": {
-    "level": "warn",
-    "output": "box.log",
-    "timestamp": true
-  },
-  "dns": {
-    "servers": [
-      {
-        "tag": "dns-remote",
-        "address": "udp://1.1.1.1",
-        "address_resolver": "dns-direct"
-      },
-      {
-        "tag": "dns-trick-direct",
-        "address": "https://sky.rethinkdns.com/",
-        "detour": "direct-fragment"
-      },
-      {
-        "tag": "dns-direct",
-        "address": "1.1.1.1",
-        "address_resolver": "dns-local",
-        "detour": "direct"
-      },
-      {
-        "tag": "dns-local",
-        "address": "local",
-        "detour": "direct"
-      },
-      {
-        "tag": "dns-block",
-        "address": "rcode://success"
-      }
-    ],
-    "rules": [
-      {
-        "domain": [
-          "www.speedtest.net",
-          "edb9e66a.bpb-worker-panel-bnj.pages.dev"
-        ],
-        "server": "dns-direct"
-      },
-      {
-        "domain": "cp.cloudflare.com",
-        "server": "dns-remote",
-        "rewrite_ttl": 3000
-      }
-    ],
-    "final": "dns-remote",
-    "static_ips": {
-      "sky.rethinkdns.com": [
-        "104.17.147.22",
-        "104.17.148.22"
-      ]
-    },
-    "independent_cache": true
-  },
-  "inbounds": [
-    {
-      "type": "tun",
-      "tag": "tun-in",
-      "mtu": 9000,
-      "inet4_address": "172.19.0.1/28",
-      "auto_route": true,
-      "strict_route": true,
-      "endpoint_independent_nat": true,
-      "stack": "mixed",
-      "sniff": true,
-      "sniff_override_destination": true
-    },
-    {
-      "type": "mixed",
-      "tag": "mixed-in",
-      "listen": "127.0.0.1",
-      "listen_port": 2334,
-      "sniff": true,
-      "sniff_override_destination": true
-    },
-    {
-      "type": "direct",
-      "tag": "dns-in",
-      "listen": "127.0.0.1",
-      "listen_port": 6450
-    }
-  ],
-  "outbounds": [
-    {
-      "type": "selector",
-      "tag": "select",
-      "outbounds": [
-        "auto",
-        "💦 BPB - Domain_1 : 443 § 0",
-        "💦 BPB - Domain_2 : 443 § 1",
-        "💦 BPB - IPv4_1 : 443 § 2",
-        "💦 BPB - IPv4_2 : 443 § 3",
-        "💦 BPB - IPv6_1 : 443 § 4",
-        "💦 BPB - IPv6_2 : 443 § 5",
-        "💦 BPB - Clean IP_1 : 443 § 6"
-      ],
-      "default": "auto"
-    },
-    {
-      "type": "urltest",
-      "tag": "auto",
-      "outbounds": [
-        "💦 BPB - Domain_1 : 443 § 0",
-        "💦 BPB - Domain_2 : 443 § 1",
-        "💦 BPB - IPv4_1 : 443 § 2",
-        "💦 BPB - IPv4_2 : 443 § 3",
-        "💦 BPB - IPv6_1 : 443 § 4",
-        "💦 BPB - IPv6_2 : 443 § 5",
-        "💦 BPB - Clean IP_1 : 443 § 6"
-      ],
-      "url": "http://connectivitycheck.gstatic.com/generate_204",
-      "interval": "10m0s",
-      "idle_timeout": "1h40m0s"
-    },
-    {
-      "type": "vless",
-      "tag": "💦 BPB - Domain_1 : 443 § 0",
-      "server": "edb9e66a.bpb-worker-panel-bnj.pages.dev",
-      "server_port": 443,
-      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
-      "tls": {
-        "enabled": true,
-        "server_name": "edb9e66A.BPb-wORkEr-PAneL-Bnj.PAGes.DEv",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "randomized"
-        }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/OnhJwWOJpQK8e4bq",
-        "headers": {
-          "Host": "edB9E66A.BPb-worKeR-PAnEL-BNJ.PAGes.deV"
-        },
-        "max_early_data": 2560,
-        "early_data_header_name": "Sec-WebSocket-Protocol"
-      },
-      "packet_encoding": ""
-    },
-    {
-      "type": "vless",
-      "tag": "💦 BPB - Domain_2 : 443 § 1",
-      "server": "www.speedtest.net",
-      "server_port": 443,
-      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
-      "tls": {
-        "enabled": true,
-        "server_name": "eDB9E66a.BpB-WORker-PaneL-BNj.PAGES.DEV",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "randomized"
-        }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/1KcjFTVhF8KdIoM0",
-        "headers": {
-          "Host": "EDb9E66a.BPb-wORKER-PANEL-bNJ.pagES.dEV"
-        },
-        "max_early_data": 2560,
-        "early_data_header_name": "Sec-WebSocket-Protocol"
-      },
-      "packet_encoding": ""
-    },
-    {
-      "type": "vless",
-      "tag": "💦 BPB - IPv4_1 : 443 § 2",
-      "server": "172.66.44.86",
-      "server_port": 443,
-      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
-      "tls": {
-        "enabled": true,
-        "server_name": "edb9e66A.bpB-wOrker-pAnEl-bNJ.PAGeS.DeV",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "randomized"
-        }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/h5A4k7FEfI1nSuI0",
-        "headers": {
-          "Host": "eDB9E66A.BpB-wORkeR-PANeL-bNj.pAGEs.Dev"
-        },
-        "max_early_data": 2560,
-        "early_data_header_name": "Sec-WebSocket-Protocol"
-      },
-      "packet_encoding": ""
-    },
-    {
-      "type": "vless",
-      "tag": "💦 BPB - IPv4_2 : 443 § 3",
-      "server": "172.66.47.170",
-      "server_port": 443,
-      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
-      "tls": {
-        "enabled": true,
-        "server_name": "eDb9E66a.Bpb-WorKEr-PAnel-Bnj.PAgeS.DeV",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "randomized"
-        }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/3wmPXzVfLYocX1K3",
-        "headers": {
-          "Host": "eDB9E66a.BPb-workER-PaNel-Bnj.paGEs.DEv"
-        },
-        "max_early_data": 2560,
-        "early_data_header_name": "Sec-WebSocket-Protocol"
-      },
-      "packet_encoding": ""
-    },
-    {
-      "type": "vless",
-      "tag": "💦 BPB - IPv6_1 : 443 § 4",
-      "server": "2606:4700:310c::ac42:2faa",
-      "server_port": 443,
-      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
-      "tls": {
-        "enabled": true,
-        "server_name": "edB9e66a.bpB-WORKER-PaNEL-BNJ.PAGES.dev",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "randomized"
-        }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/eWsvj8x5xFwFdiAL",
-        "headers": {
-          "Host": "EDB9e66a.bpB-wOrkeR-pANEL-bNJ.PAgeS.Dev"
-        },
-        "max_early_data": 2560,
-        "early_data_header_name": "Sec-WebSocket-Protocol"
-      },
-      "packet_encoding": ""
-    },
-    {
-      "type": "vless",
-      "tag": "💦 BPB - IPv6_2 : 443 § 5",
-      "server": "2606:4700:310c::ac42:2c56",
-      "server_port": 443,
-      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
-      "tls": {
-        "enabled": true,
-        "server_name": "eDB9e66A.BpB-workeR-PAneL-bNJ.pAgeS.dEv",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "randomized"
-        }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/04JX3vKcF8PD7cHs",
-        "headers": {
-          "Host": "EDB9e66A.BpB-WoRKer-pANEL-BnJ.PAGES.dEV"
-        },
-        "max_early_data": 2560,
-        "early_data_header_name": "Sec-WebSocket-Protocol"
-      },
-      "packet_encoding": ""
-    },
-    {
-      "type": "vless",
-      "tag": "💦 BPB - Clean IP_1 : 443 § 6",
-      "server": "104.17.203.0",
-      "server_port": 443,
-      "uuid": "89b3cbba-e6ac-485a-9481-976a0415eab9",
-      "tls": {
-        "enabled": true,
-        "server_name": "eDB9e66a.bPb-WOrKer-PANeL-BNj.PageS.dev",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "randomized"
-        }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/IydEC4UDB9CRSvDh",
-        "headers": {
-          "Host": "EdB9e66a.BPB-wORkER-paNEL-BNj.pAgEs.dEV"
-        },
-        "max_early_data": 2560,
-        "early_data_header_name": "Sec-WebSocket-Protocol"
-      },
-      "packet_encoding": ""
-    },
-    {
-      "type": "dns",
-      "tag": "dns-out"
-    },
-    {
-      "type": "direct",
-      "tag": "direct"
-    },
-    {
-      "type": "direct",
-      "tag": "direct-fragment",
-      "tls_fragment": {
-        "enabled": true,
-        "size": "1-500",
-        "sleep": "0-500"
-      }
-    },
-    {
-      "type": "direct",
-      "tag": "bypass"
-    },
-    {
-      "type": "block",
-      "tag": "block"
-    }
-  ],
-  "route": {
-    "rules": [
-      {
-        "rule_set": [
-          "geosite-ads",
-          "geosite-malware",
-          "geosite-phishing",
-          "geosite-cryptominers",
-          "geoip-malware",
-          "geoip-phishing"
-        ],
-        "outbound": "block"
-      },
-      {
-        "inbound": "dns-in",
-        "outbound": "dns-out"
-      },
-      {
-        "port": 53,
-        "outbound": "dns-out"
-      },
-      {
-        "clash_mode": "Direct",
-        "outbound": "direct"
-      },
-      {
-        "clash_mode": "Global",
-        "outbound": "select"
-      }
-    ],
-    "rule_set": [
-      {
-        "type": "remote",
-        "tag": "geosite-ads",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geosite-category-ads-all.srs",
-        "update_interval": "120h0m0s"
-      },
-      {
-        "type": "remote",
-        "tag": "geosite-malware",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geosite-malware.srs",
-        "update_interval": "120h0m0s"
-      },
-      {
-        "type": "remote",
-        "tag": "geosite-phishing",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geosite-phishing.srs",
-        "update_interval": "120h0m0s"
-      },
-      {
-        "type": "remote",
-        "tag": "geosite-cryptominers",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geosite-cryptominers.srs",
-        "update_interval": "120h0m0s"
-      },
-      {
-        "type": "remote",
-        "tag": "geoip-phishing",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geoip-phishing.srs",
-        "update_interval": "120h0m0s"
-      },
-      {
-        "type": "remote",
-        "tag": "geoip-malware",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/block/geoip-malware.srs",
-        "update_interval": "120h0m0s"
-      }
-    ],
-    "final": "select",
-    "auto_detect_interface": true,
-    "override_android_vpn": true
-  },
-  "experimental": {
-    "cache_file": {
-      "enabled": true,
-      "path": "clash.db"
-    },
-    "clash_api": {
-      "external_controller": "127.0.0.1:6756",
-      "secret": "J_FJEj_BtddEdYjl"
-    }
-  }
-}
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:443?encryption=none&security=tls&sni=Saba5.SabasHOpMoBilE5.wORKeRS.deV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=saba5.SABasHOPMObilE5.Workers.dEv&path=%2FZlufQXoeL4EdRWhc%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%20443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:443?encryption=none&security=tls&sni=SAbA5.saBashOPMObILe5.wORKeRs.Dev&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SABA5.sAbaShOpMObIle5.wORKErS.DEv&path=%2F8AjUTSSLpBOilfZj%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%20443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:443?encryption=none&security=tls&sni=saBA5.sABAsHopmOBILE5.WORKerS.dEV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sABA5.SabAsHopMobiLe5.WOrKErs.dEv&path=%2F4SDkSp4GTm8avKRl%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%20443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:443?encryption=none&security=tls&sni=sABA5.SABASHopmOBIlE5.WORkERS.Dev&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SabA5.saBASHOpMoBILe5.WoRkeRS.DEv&path=%2FifDlvvayTy4rsGL8%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%20443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:443?encryption=none&security=tls&sni=Saba5.saBaShopmobilE5.wORKErs.DEv&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sabA5.sabAsHOPMobIle5.wOrKeRs.deV&path=%2FDQJjAXc44K8MYtKy%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%20443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:443?encryption=none&security=tls&sni=sABa5.SaBAShOPMobile5.workErS.deV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sAba5.sAbASHOPmOBIle5.WorkErs.DEv&path=%2FUMKOimqWpAhzwE7V%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%20443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:8443?encryption=none&security=tls&sni=sabA5.saBASHoPMOBile5.WorKERS.dEV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sABA5.SaBaSHopMObIle5.worKers.DeV&path=%2FinA0jMWa0qk20IHd%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%208443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:8443?encryption=none&security=tls&sni=SAba5.SaBasHOPMOBIlE5.woRKERS.DeV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sABa5.sABaShOpMoBIle5.woRKERS.DeV&path=%2FsGQdGwVaFki9LFxD%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%208443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:8443?encryption=none&security=tls&sni=SAba5.sAbaSHOPmobIlE5.WorKeRS.dEv&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=saba5.saBASHoPMobiLE5.wOrKERS.dEv&path=%2FQxt2aOo0gNcz6bmE%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%208443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:8443?encryption=none&security=tls&sni=sabA5.sabAshOPmoBile5.WoRkERS.DEV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SAbA5.sABaShopMOBILe5.wOrkErS.DEv&path=%2FRR0rmZKc8ktVfmhc%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%208443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:8443?encryption=none&security=tls&sni=saba5.SABAshOpmObiLE5.woRkeRS.DEV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=saBA5.SaBAShOpMobIlE5.wORkeRS.DEV&path=%2FGqMCXSiAZwFF3cTM%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%208443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:8443?encryption=none&security=tls&sni=sAba5.sAbAShoPmoBilE5.wORKerS.dEv&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=saBa5.saBashOpMobile5.WorKERs.dEV&path=%2FzBfYnUwNEoI4ej16%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%208443
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:2053?encryption=none&security=tls&sni=SAba5.sAbaShOPmobiLE5.workERs.Dev&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SabA5.SAbAShoPmOBILe5.workErS.DEv&path=%2F1Omt6dlt6jaBWQWI%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%202053
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:2053?encryption=none&security=tls&sni=sAbA5.sabAshopMoBILE5.WoRKeRS.dev&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sABA5.sABaShoPmOBile5.woRkeRS.dEv&path=%2Fp7BrDGIRYD82mJXn%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%202053
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:2053?encryption=none&security=tls&sni=saba5.saBAShoPmoBiLE5.WorKerS.DEv&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SaBa5.SABashOpMOBile5.worKeRS.DEV&path=%2FEepaof7Ocf1Nd6ub%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%202053
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:2053?encryption=none&security=tls&sni=SabA5.sabasHOPmobILE5.wORKErs.DeV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sABA5.SABAsHopmOBile5.WORKERS.DEV&path=%2FFHpacDBP8NJYCUQC%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%202053
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:2053?encryption=none&security=tls&sni=saba5.SAbAShoPMobile5.worKers.dEV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sABA5.SAbAshOpmOBIle5.WoRkERS.dEV&path=%2FMXrMzrZoge4hpAI9%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%202053
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:2053?encryption=none&security=tls&sni=SaBa5.SABAsHoPMObILE5.WorKErs.DEV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SabA5.SaBAShOPmObile5.WOrKErS.dev&path=%2FApVQo8fSRy7zm6Tu%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%202053
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:2083?encryption=none&security=tls&sni=SABa5.sAbasHOPmOBiLe5.wOrKERS.DeV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SAbA5.saBAShOpMObilE5.woRkeRs.deV&path=%2FRo0onONxWBmkLR79%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%202083
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:2083?encryption=none&security=tls&sni=sAbA5.SaBAshoPmObILE5.wOrKErS.DeV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SABa5.sAbaShOpMobilE5.wORKErs.DEv&path=%2FZvgHbzKayxHuPu61%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%202083
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:2083?encryption=none&security=tls&sni=sAba5.sAbAShopMoBIlE5.wOrkers.deV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=saBA5.SabAShopMObIlE5.WORkeRs.DeV&path=%2Frz5GVoLQDhq9fh3R%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%202083
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:2083?encryption=none&security=tls&sni=sAbA5.SAbAsHOpMObilE5.wORkerS.dEV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=Saba5.sAbashOPMobIle5.WoRKERs.DeV&path=%2F4SUUUdOoatNOREB3%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%202083
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:2083?encryption=none&security=tls&sni=SABa5.sabASHopMObILe5.workERS.deV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SABA5.sABaSHOPMObILe5.woRKERS.dev&path=%2FeO4aoD0GZxeKZogI%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%202083
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:2083?encryption=none&security=tls&sni=Saba5.SabashoPmoBiLe5.WORkERs.dEv&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SAbA5.sABaShopmoBiLE5.WorKERs.Dev&path=%2FyDFMbpSIWMKu2EPt%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%202083
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:2087?encryption=none&security=tls&sni=SabA5.SabaShoPMobiLE5.WoRkeRS.DEv&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=Saba5.sABAsHopMObILE5.worKERS.dev&path=%2FTAZ25W1lOQppiSaL%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%202087
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:2087?encryption=none&security=tls&sni=SAba5.SABasHopmoBiLe5.woRKErS.DEv&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=saBA5.sabAShOPmObilE5.WOrKErS.DEv&path=%2F0e3LtNV11mdZs7au%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%202087
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:2087?encryption=none&security=tls&sni=SAba5.sAbashOPMOBIle5.woRkERs.DEv&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=Saba5.sAbaSHopmObILe5.workers.DEV&path=%2FQF1ezxoJJ1At0z2A%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%202087
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:2087?encryption=none&security=tls&sni=sAbA5.sAbashOpmObILe5.WOrKERs.dEv&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sAbA5.sabashOpMObilE5.WorKeRs.dev&path=%2FD6KwqqkO1GqlMC06%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%202087
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:2087?encryption=none&security=tls&sni=sAba5.SABashopMObILe5.WorKERS.DEv&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sabA5.SabASHopMOBIle5.workErS.dev&path=%2F65jOdAhKWZXbWV7r%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%202087
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:2087?encryption=none&security=tls&sni=sAbA5.SaBasHOPmOBILe5.WorkERs.deV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sABa5.SAbAshoPMOBILe5.WOrKERS.Dev&path=%2FiPiZP8nQXUgKkr7q%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%202087
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:2096?encryption=none&security=tls&sni=SABa5.SabaSHOpmOBIlE5.WoRkeRS.Dev&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SabA5.SabasHopmoBILe5.wORkErS.deV&path=%2FkUgX3fMfVFOjRdES%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%202096
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:2096?encryption=none&security=tls&sni=sABA5.SABashOPMOBilE5.wORkErs.dEV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=saBA5.SaBAsHOpMObIle5.WorKerS.Dev&path=%2FAtBdHSwXXRV0DvRA%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%202096
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:2096?encryption=none&security=tls&sni=sABA5.sABAShOpMObIlE5.wORKERs.dEV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sABa5.SABaShOpmobILe5.woRKErS.deV&path=%2F1rv7MpEHSDYef6UY%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%202096
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:2096?encryption=none&security=tls&sni=Saba5.SAbASHopmoBIle5.WorKERS.dEV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=saBA5.SaBasHOPmobiLe5.WoRKerS.dEv&path=%2FJLnpBsdLvEKmWYC9%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%202096
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:2096?encryption=none&security=tls&sni=SAbA5.SABasHOpmOBILe5.WORkERS.DEv&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=SaBA5.SabasHopMoBiLE5.WORkeRS.DeV&path=%2FclQoxw3e9Vf2ExQA%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%202096
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:2096?encryption=none&security=tls&sni=sAbA5.sabaSHoPmObiLE5.WORkErs.DEV&alpn=h2%2Chttp%2F1.1&fp=randomized&type=ws&host=sABa5.sabaSHopmoBilE5.WorKErS.dEv&path=%2FT3SqqhrH9rWp4ouI%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%202096
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:80?encryption=none&security=none&type=ws&host=SaBA5.sabAShOPmobile5.WOrKErS.dev&path=%2FPRcTgdtHGskT0Xc0%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%2080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:80?encryption=none&security=none&type=ws&host=sAbA5.sABAsHoPMoBiLE5.wORKERs.dev&path=%2F8tokSijqyAW73jtb%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%2080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:80?encryption=none&security=none&type=ws&host=saBa5.sAbAShOpmobIle5.WOrKerS.DEV&path=%2FfTst1WEyzFaQK64i%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%2080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:80?encryption=none&security=none&type=ws&host=sAba5.saBaShOPmObiLe5.WoRkErs.dev&path=%2FpEeCpTLEdAS3M1sM%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%2080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:80?encryption=none&security=none&type=ws&host=sABA5.sAbAShOPmObILe5.wORkerS.dev&path=%2FjKlZZhg5qKtt44n8%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%2080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:80?encryption=none&security=none&type=ws&host=saBA5.SabaShOpMoBILE5.WORkers.DEV&path=%2FQrIpolHVDRzj1W0l%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%2080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:8080?encryption=none&security=none&type=ws&host=SAba5.sAbASHopMObiLe5.wORKers.deV&path=%2FYCDURRh6nTk6epCm%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%208080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:8080?encryption=none&security=none&type=ws&host=SaBA5.SABashopMOBIle5.WOrKerS.dEV&path=%2FbrYvEJExteBrs3FL%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%208080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:8080?encryption=none&security=none&type=ws&host=sABa5.sabAshOPMobIlE5.workERs.deV&path=%2FeBFSp7Z6Zx8Mekfg%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%208080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:8080?encryption=none&security=none&type=ws&host=SabA5.SABAshopMoBiLe5.WoRKERs.deV&path=%2FPHLlx7Nr5wtNFDi3%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%208080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:8080?encryption=none&security=none&type=ws&host=saba5.SAbaShOpmObile5.WoRkErS.dEV&path=%2FsTTxxVSDL2BscG6i%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%208080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:8080?encryption=none&security=none&type=ws&host=sABa5.SabaShopmoBile5.WoRKERS.dEv&path=%2FZjEXH6zMPnVRktC0%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%208080
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:2052?encryption=none&security=none&type=ws&host=sabA5.SabASHOpMObILE5.woRkERS.DeV&path=%2Fp6qMzEADHYvUAhnE%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%202052
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:2052?encryption=none&security=none&type=ws&host=saBA5.SABasHoPMOBILe5.WOrKErS.DEV&path=%2FeIZwg6KYoMkh2E8U%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%202052
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:2052?encryption=none&security=none&type=ws&host=saBA5.saBAsHOPmOBIlE5.WorKERs.dev&path=%2FGovTGaZcB8sXiDcg%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%202052
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:2052?encryption=none&security=none&type=ws&host=SabA5.sAbASHOpmOBIle5.WORkErs.dEV&path=%2FvaxQxeJxnL5NVSYP%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%202052
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:2052?encryption=none&security=none&type=ws&host=sABa5.sabAShopmOBiLe5.WorKers.Dev&path=%2FttpaTKU33RgEfFww%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%202052
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:2052?encryption=none&security=none&type=ws&host=sABa5.SAbASHOPmobIle5.WORkeRS.DeV&path=%2FZKJqmnehd6owmq0W%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%202052
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:2082?encryption=none&security=none&type=ws&host=sABA5.sAbAshoPMOBile5.WorKerS.dEV&path=%2FRJUmzfiPeBXKe57U%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%202082
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:2082?encryption=none&security=none&type=ws&host=sAba5.SabaShopmobIle5.WorKeRS.DeV&path=%2FizPgEApMRKuirBf6%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%202082
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:2082?encryption=none&security=none&type=ws&host=Saba5.SaBaShOpMoBiLE5.workErs.DeV&path=%2FQZyLFHJoRQXILBgI%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%202082
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:2082?encryption=none&security=none&type=ws&host=sAbA5.sabAShopmObile5.wORKerS.Dev&path=%2FJoXEPMbaobdFzLx4%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%202082
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:2082?encryption=none&security=none&type=ws&host=SABa5.sabaShopmoBILe5.wORkERs.dEv&path=%2Fd6gYiOLPNjrbBYI9%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%202082
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:2082?encryption=none&security=none&type=ws&host=SABA5.SABasHOpmOBIle5.worKErs.DEv&path=%2Fw5MnPor5U4bO7Kbe%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%202082
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:2086?encryption=none&security=none&type=ws&host=sAbA5.saBAShoPMoBILE5.wOrkeRS.Dev&path=%2FnqtqbAOx1eM55ZZK%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%202086
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:2086?encryption=none&security=none&type=ws&host=sAba5.saBasHOpMoBILE5.WOrKerS.DEV&path=%2FebnmUOpNFITd8epu%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%202086
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:2086?encryption=none&security=none&type=ws&host=SabA5.sABAShOPmobile5.Workers.dev&path=%2FTHvM99QuHgXT1jrN%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%202086
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:2086?encryption=none&security=none&type=ws&host=SaBA5.sABasHoPmobILE5.wOrkerS.dev&path=%2FRxY3wI56ro49Je1g%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%202086
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:2086?encryption=none&security=none&type=ws&host=SABa5.SABashOpMOBIle5.WoRKers.DeV&path=%2F48yVo6lVDaX2KAct%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%202086
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:2086?encryption=none&security=none&type=ws&host=saBA5.saBAsHoPmobILE5.WOrKers.dEV&path=%2FB06hsnvDdM7IYrDk%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%202086
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:2095?encryption=none&security=none&type=ws&host=saBa5.saBAshOPMobIlE5.WorkeRS.DEv&path=%2FmoBgwPLB7TsB2OOH%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%202095
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:2095?encryption=none&security=none&type=ws&host=sAbA5.sabaShoPmOBIle5.workers.deV&path=%2FGkA2AFJ0r6mMcLK3%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%202095
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:2095?encryption=none&security=none&type=ws&host=SaBa5.sABAShOpmOBiLe5.worKErS.dEV&path=%2FECXszju7qDRmvvab%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%202095
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:2095?encryption=none&security=none&type=ws&host=Saba5.SAbasHopMObIle5.wOrKerS.DEV&path=%2FXM2K1sIb6g7JlTU7%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%202095
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:2095?encryption=none&security=none&type=ws&host=saBA5.SAbaShOpMOBILe5.worKERS.deV&path=%2FfJkxhqFGXthBtQLW%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%202095
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:2095?encryption=none&security=none&type=ws&host=sAbA5.saBashoPmobilE5.WorkERs.DeV&path=%2FfDdyD007ctG2V6kE%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%202095
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@saba5.sabashopmobile5.workers.dev:8880?encryption=none&security=none&type=ws&host=SABA5.SAbasHopmObILE5.WorKerS.DeV&path=%2FFnejEvImq6bhjmec%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_1%20%3A%208880
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@www.speedtest.net:8880?encryption=none&security=none&type=ws&host=sABa5.SAbaShoPmoBilE5.WOrkERS.dev&path=%2Fqx89V1QSmQCZOEYU%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20Domain_2%20%3A%208880
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@104.21.90.172:8880?encryption=none&security=none&type=ws&host=saBA5.SaBAsHOPMObILE5.WORKeRs.Dev&path=%2FtAtcV8eqjevhxqsd%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_1%20%3A%208880
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@172.67.202.175:8880?encryption=none&security=none&type=ws&host=sABA5.sAbaShopMOBile5.workerS.deV&path=%2FU8BzrudwTeP9x7tW%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv4_2%20%3A%208880
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3037::6815:5aac]:8880?encryption=none&security=none&type=ws&host=SABa5.SAbashoPmObIlE5.WOrkeRs.dEv&path=%2FjckkSV0wpA15yT0A%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_1%20%3A%208880
+vless://89b3cbba-e6ac-485a-9481-976a0415eab9@[2606:4700:3034::ac43:caaf]:8880?encryption=none&security=none&type=ws&host=SABA5.sAbASHOPmOBILe5.WOrKers.DEv&path=%2FFkbcc8pX2c5GEPyV%3Fed%3D2560#%F0%9F%92%A6%20BPB%20-%20IPv6_2%20%3A%208880
+
